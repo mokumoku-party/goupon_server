@@ -60,7 +60,8 @@ def cal_distance(hand_1,hand_2):
 
 # 画像の人物がグータッチしているか判定する
 def check_gou_touch (detection_result):
-    is_client_debug = os.environ.get('IS_CLIENT_DEBUG', False)
+    is_client_debug = os.environ.get('IS_CLIENT_DEBUG', 'False') == 'True'
+    print(is_client_debug)
     pose_landmarks_list = detection_result.pose_landmarks
     if(is_client_debug or len(pose_landmarks_list) >= 2):
         first_person_pose_landmarks = pose_landmarks_list[0]
@@ -97,7 +98,7 @@ def check_gou_touch (detection_result):
         distance.append(cal_distance(first_person_left_position, second_person_left_position))
         distance.append(cal_distance(first_person_left_position,first_person_right_position))
         distance.append(cal_distance(second_person_left_position, second_person_right_position))
-        if is_client_debug:
+        if (is_client_debug):
             return {"num_of_people": len(pose_landmarks_list),"distance":distance}
         for i in distance:
             if i <= threshold_distance_of_gou:
@@ -139,4 +140,4 @@ def change_client_debug_mode(bool):
         return {'message':'now mode ' + bool}
 
 def check_client_debug_mode():
-    return {'message':'now mode ' + str(os.environ.get('IS_CLIENT_DEBUG', False))}
+    return {'message':'now mode ' + str(os.environ.get('IS_CLIENT_DEBUG', 'False') == 'True')}
