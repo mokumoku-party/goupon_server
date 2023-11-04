@@ -2,6 +2,7 @@ from fastapi import FastAPI, UploadFile
 import shutil
 import goutouch_mediapipe as gm
 from fastapi.middleware.cors import CORSMiddleware
+import os
 
 app = FastAPI()
 
@@ -23,4 +24,12 @@ async def check_gou_touch(upload_file: UploadFile):
 @app.get("/test")
 async def test():
     return {"message":"hello api!"}
+
+@app.get("/change_debug_mode/{bool}")
+async def chenge_debug_mode(bool):
+    return gm.change_client_debug_mode(bool)
+
+@app.get('/check_debug_mode')
+async def check_debug_mode():
+    return gm.check_client_debug_mode()
     
